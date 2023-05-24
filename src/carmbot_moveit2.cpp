@@ -28,10 +28,13 @@ void tprint( moveit::planning_interface::MoveGroupInterface::Plan &plan ) {
   for (unsigned i=0; i< tsize; i++)
   {
      tpos = msg.joint_trajectory.points[i].positions;
-     printf("tpos %d  ori: %f %f %f %f pos: %f %f %f \n", i, 
-		     tpos[0], tpos[1], tpos[2], tpos[3]
-		     ,tpos[4], tpos[5], tpos[6]
-	   );
+     printf("tpos %d", i);
+     printf("  joints :");
+     for (unsigned j=0; j< tpos.size(); j++)
+     {
+         printf( "%f",  tpos[j] );
+     }
+         printf( "\n");
   }
 
 }
