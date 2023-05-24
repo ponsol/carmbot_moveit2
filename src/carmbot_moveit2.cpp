@@ -23,10 +23,15 @@ void tprint( moveit::planning_interface::MoveGroupInterface::Plan &plan ) {
   printf("size of trajectory: %ld\n", tsize );
 
   std::vector<double> tpos ;
+  std::vector<double> ori ;
+
   for (unsigned i=0; i< tsize; i++)
   {
      tpos = msg.joint_trajectory.points[i].positions;
-     printf("position %d = %f %f %f\n", i, tpos[0], tpos[1], tpos[2] );
+     printf("tpos %d  ori: %f %f %f %f pos: %f %f %f \n", i, 
+		     tpos[0], tpos[1], tpos[2], tpos[3]
+		     ,tpos[4], tpos[5], tpos[6]
+	   );
   }
 
 }
@@ -60,6 +65,15 @@ int plan_move ( moveit::planning_interface::MoveGroupInterface &move_group_inter
 
   move_group_interface.setApproximateJointValueTarget(target_pose);
 
+  //using namespace std::chrono_literals;
+  //auto ns = rclcpp::Duration(std::chrono::seconds(6));
+  //auto const ns =  std::chrono::nanoseconds(6s);
+  //rclcpp::Context::sleep_for( &ns);
+  
+
+
+  sleep(1);
+
   // Create a plan to that target pose
   auto  [success, plan] = [&move_group_interface]{
     moveit::planning_interface::MoveGroupInterface::Plan msg;
@@ -68,6 +82,7 @@ int plan_move ( moveit::planning_interface::MoveGroupInterface &move_group_inter
   }();
 
   tprint( plan);
+
 
   // Execute the plan
   if(success) {
